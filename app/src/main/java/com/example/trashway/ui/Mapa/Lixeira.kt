@@ -1,4 +1,4 @@
-package com.example.trashway.ui.dashboard
+package com.example.trashway.ui.Mapa
 
 import com.google.android.gms.maps.model.LatLng
 
