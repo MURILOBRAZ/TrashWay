@@ -1,10 +1,9 @@
-package com.example.trashway
+package com.example.trashway.ui.Mapa
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.trashway.ui.dashboard.Lixeira
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.math.atan2
@@ -60,8 +59,7 @@ class LixeiraViewModel(private val db: FirebaseFirestore) : ViewModel() {
     private fun atualizarDistancias(userLatLng: LatLng) {
         _lixeiras.value = _lixeiras.value?.map { lixeira ->
             val distancia = calcularDistancia(userLatLng, lixeira.latLng)
-            lixeira.copy(distancia = distancia)
-        }
+            lixeira.copy(distancia = distancia)        }
     }
 
     // Função para calcular a distância entre o usuário e a lixeira

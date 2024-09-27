@@ -1,4 +1,4 @@
-package com.example.trashway.ui.dashboard
+package com.example.trashway.ui.Mapa
 
 import android.Manifest
 import android.content.Intent
@@ -26,7 +26,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.example.trashway.LixeiraViewModel
 import com.google.android.gms.maps.model.LatLngBounds
 
 class DashboardFragment : Fragment(), OnMapReadyCallback {

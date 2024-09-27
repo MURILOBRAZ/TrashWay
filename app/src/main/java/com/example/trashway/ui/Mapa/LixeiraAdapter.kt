@@ -1,4 +1,4 @@
-package com.example.trashway.ui.dashboard
+package com.example.trashway.ui.Mapa
 
 import android.view.LayoutInflater
 import android.view.View

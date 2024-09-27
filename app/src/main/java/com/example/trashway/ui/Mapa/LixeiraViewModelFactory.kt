@@ -2,6 +2,7 @@ package com.example.trashway
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.trashway.ui.Mapa.LixeiraViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LixeiraViewModelFactory(private val db: FirebaseFirestore) : ViewModelProvider.Factory {
