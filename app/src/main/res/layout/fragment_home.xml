@@ -42,41 +42,30 @@
         app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
         app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
-        android:id="@+id/buttonProcurarLixeiras"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:backgroundTint="#97E5AA"
-        android:text="@string/procurar_lixeiras"
+    <TextView
+        android:id="@+id/textViewAbout"
+        android:layout_width="312dp"
+        android:layout_height="418dp"
+        android:layout_marginTop="192dp"
+        android:text="@string/sobre"
+        android:textAlignment="center"
         android:textColor="#40C187"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewWelcome" />
+        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
-        android:id="@+id/buttonReportarProblema"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#97E5AA"
-        android:text="Reportar Problema"
-        android:textColor="#40C187"
+    <ImageView
+        android:id="@+id/imageViewCopy"
+        android:layout_width="87dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="720dp"
+        android:src="@drawable/copyrightnome"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.006"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonProcurarLixeiras" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonSobreApp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#97E5AA"
-        android:text="Sobre o App"
-        android:textColor="#40C187"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonReportarProblema" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

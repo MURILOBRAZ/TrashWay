@@ -6,4 +6,5 @@
     <string name="bem_vindo">Bem-Vindo!</string>
     <string name="trashway">TrashWay</string>
     <string name="procurar_lixeiras">Procurar Lixeiras</string>
+    <string name="sobre">Este Aplicativo foi desenvolvido pelos alunos do 8°Semestre do Curso de Engenharia da Computação da Universidade Santa Cecília...\n\n\n Nele você encontrará a localização das Lixeiras espalhadas pela cidade, podendo localizar a mais próxima a você para então poder descartar seu lixo, ajudando tanto nos cuidados da cidade quanto ao Meio Ambiente</string>
 </resources>
