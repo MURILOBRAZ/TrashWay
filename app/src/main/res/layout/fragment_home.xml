@@ -15,16 +15,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageViewLogo"
-            android:layout_width="407dp"
-            android:layout_height="75dp"
-            android:layout_marginTop="4dp"
-            android:background="#97E5AA"
-            android:src="@drawable/icon_nome"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="476dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="4dp"
+        android:background="#97E5AA"
+        android:src="@drawable/icon_nome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     />
 
     <TextView
@@ -58,7 +58,7 @@
 
     <ImageView
         android:id="@+id/imageViewCopy"
-        android:layout_width="87dp"
+        android:layout_width="48dp"
         android:layout_height="18dp"
         android:layout_marginTop="720dp"
         android:src="@drawable/copyrightnome"
