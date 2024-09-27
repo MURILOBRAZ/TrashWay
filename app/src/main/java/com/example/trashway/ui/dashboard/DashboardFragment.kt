@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.trashway.LixeiraViewModel
+import com.google.android.gms.maps.model.LatLngBounds
 
 class DashboardFragment : Fragment(), OnMapReadyCallback {
 
@@ -113,18 +115,30 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
         this.googleMap = googleMap
 
         lixeiraViewModel.lixeiras.observe(viewLifecycleOwner) { lixeiras ->
-            lixeiras.forEach { lixeira ->
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(lixeira.latLng)
-                        .title(lixeira.nome)
-                        .icon(BitmapDescriptorFactory.defaultMarker(157.68f)) // Define a cor da lixeira
-                )
+            if (lixeiras.isNotEmpty()) {
+                lixeiras.forEach { lixeira ->
+                    googleMap.addMarker(
+                        MarkerOptions()
+                            .position(lixeira.latLng)
+                            .title(lixeira.nome)
+                            .icon(BitmapDescriptorFactory.defaultMarker(157.68f)) // Cor revertida para a original
+                    )
+                }
+
+                // Ajuste a câmera para mostrar todos os marcadores
+                val boundsBuilder = LatLngBounds.builder()
+                lixeiras.forEach { lixeira ->
+                    boundsBuilder.include(lixeira.latLng)
+                }
+            } else {
+                Log.d("DashboardFragment", "Nenhuma lixeira encontrada.")
             }
         }
 
-        getCurrentLocation()
+        getCurrentLocation() // Chame a função para obter a localização atual do usuário
     }
+
+
 
     // Métodos do ciclo de vida do MapView
     override fun onResume() {
