@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "951594136111",
+    "project_id": "trashway-d468b",
+    "storage_bucket": "trashway-d468b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951594136111:android:fb1dfc6cbae256f3e34cda",
+        "android_client_info": {
+          "package_name": "com.example.trashway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxCvrnaH_B1f9B3FlZwnHsuvhMEcQE1g0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
