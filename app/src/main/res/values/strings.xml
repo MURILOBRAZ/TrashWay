@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TrashWay</string>
+    <string name="title_home">Início</string>
+    <string name="title_dashboard">Procurar Lixeiras</string>
+    <string name="title_notifications">Reportar Problemas</string>
+    <string name="bem_vindo">Bem-Vindo!</string>
+    <string name="trashway">TrashWay</string>
+    <string name="procurar_lixeiras">Procurar Lixeiras</string>
+</resources>
