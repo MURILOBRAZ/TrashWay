@@ -3,6 +3,10 @@ package com.example.trashway.ui.dashboard
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,8 +26,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.io.path.Path
+import kotlin.io.path.moveTo
 
 class DashboardFragment : Fragment(), OnMapReadyCallback {
 
@@ -61,12 +69,15 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         recyclerView = binding.recyclerViewLixeiras
-        lixeiraAdapter = LixeiraAdapter(lixeiras) { lixeira ->
+        lixeiraAdapter = LixeiraAdapter(lixeiras, { lixeira ->
+            // Ação quando o botão "IR" é clicado
             val gmmIntentUri = Uri.parse("google.navigation:q=${lixeira.latLng.latitude},${lixeira.latLng.longitude}")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
-        }
+        }, { latLng ->
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+        })
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = lixeiraAdapter
 
@@ -101,6 +112,31 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
             }
         }
     }
+    private fun createColoredMarker(): BitmapDescriptor {
+        val paint = Paint().apply {
+            color = Color.parseColor("#97E5AA") // Sua cor
+            style = Paint.Style.FILL
+            isAntiAlias = true
+        }
+
+        // Tamanho do bitmap
+        val width = 100
+        val height = 150
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+
+        // Desenha o pino padrão
+        val path = android.graphics.Path().apply {
+            moveTo(width / 2f, 0f) // Topo do pino
+            lineTo(0f, height.toFloat()) // Lado esquerdo
+            lineTo(width.toFloat(), height.toFloat()) // Lado direito
+            close()
+        }
+        canvas.drawPath(path, paint)
+
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap

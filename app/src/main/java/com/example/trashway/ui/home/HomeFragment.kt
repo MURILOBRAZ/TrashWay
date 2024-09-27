@@ -33,14 +33,6 @@ class HomeFragment : Fragment() {
         // Aqui você pode usar o ViewModel para atualizar a UI, se necessário
         binding.textViewWelcome.text = homeViewModel.text.value
 
-        binding.buttonProcurarLixeiras.setOnClickListener {
-            findNavController().navigate(R.id.navigation_dashboard) // Navega para a tela do dashboard
-        }
-
-        binding.buttonReportarProblema.setOnClickListener {
-            findNavController().navigate(R.id.navigation_notifications) // Navega para a tela de notificações
-        }
-
     }
 
 
