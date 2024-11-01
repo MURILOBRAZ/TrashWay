@@ -11,9 +11,9 @@ import com.example.trashway.R
 import com.google.android.gms.maps.model.LatLng
 
 class LixeiraAdapter(
-    private val lixeiras: List<Lixeira>,           // Lista de lixeiras
-    private val onClick: (Lixeira) -> Unit,        // Ação quando o botão "IR" for clicado
-    private val onLixeiraClick: (LatLng) -> Unit    // Ação quando o LinearLayout for clicado
+    private var lixeiras: List<Lixeira>,
+    private val onClick: (Lixeira) -> Unit,
+    private val onLixeiraClick: (LatLng) -> Unit
 ) : RecyclerView.Adapter<LixeiraAdapter.LixeiraViewHolder>() {
 
     inner class LixeiraViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,7 +21,7 @@ class LixeiraAdapter(
         val localTextView: TextView = itemView.findViewById(R.id.textViewLocalLixeira)
         val distanciaTextView: TextView = itemView.findViewById(R.id.textViewDistancia)
         val irButton: Button = itemView.findViewById(R.id.buttonIr)
-        val linearLayout: LinearLayout = itemView.findViewById(R.id.linear) // Certifique-se de que o ID está correto
+        val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 
         fun bind(lixeira: Lixeira) {
             nomeTextView.text = lixeira.nome
@@ -29,11 +29,11 @@ class LixeiraAdapter(
             distanciaTextView.text = lixeira.distancia
 
             irButton.setOnClickListener {
-                onClick(lixeira)  // Executa a ação quando o botão "IR" é clicado
+                onClick(lixeira)
             }
 
             linearLayout.setOnClickListener {
-                onLixeiraClick(lixeira.latLng) // Centraliza o mapa ao clicar no LinearLayout
+                onLixeiraClick(lixeira.latLng)
             }
         }
     }
@@ -49,4 +49,11 @@ class LixeiraAdapter(
     }
 
     override fun getItemCount() = lixeiras.size
+
+    // Método para atualizar apenas a lista de dados
+    fun updateLixeiras(newLixeiras: List<Lixeira>) {
+        lixeiras = newLixeiras
+        notifyDataSetChanged() // Notifica o adapter para atualizar a visualização
+    }
 }
+
