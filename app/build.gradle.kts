@@ -37,15 +37,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true
     }
 }
 
@@ -59,20 +58,16 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.databinding.runtime)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
-    implementation(libs.firebase.common.ktx)
-    implementation(libs.firebase.firestore.ktx)
+
+    // Firebase: as versões vêm do BoM
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
-    implementation(libs.firebase.appcheck.ktx)
+    releaseImplementation(libs.firebase.appcheck.playintegrity)
+    debugImplementation(libs.firebase.appcheck.debug)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // Import the BoM for the Firebase platform
-    implementation(platform(libs.firebase.bom))
-    // Add the dependencies for the App Check libraries
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation(libs.firebase.appcheck.playintegrity)
-    implementation(kotlin("script-runtime"))
 }

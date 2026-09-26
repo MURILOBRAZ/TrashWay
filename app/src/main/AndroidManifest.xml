@@ -7,6 +7,7 @@
 
 
     <application
+        android:name=".TrashWayApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -34,14 +35,10 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/Theme.TrashWay"
             >
         </activity>
-        <activity
-            android:name=".ui.problemas.NotificationsFragment"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
 
 
     </application>

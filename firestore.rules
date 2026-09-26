@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Lixeiras: somente leitura pelo app (cadastro feito pelo console)
+    match /lixeiras/{lixeiraId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Relatos: o app só pode criar, e apenas no formato esperado.
+    // Ninguém lê, altera ou apaga pelo app.
+    match /Problemas/{problemaId} {
+      allow create: if request.resource.data.keys().hasOnly(
+                         ['lixeiraId', 'nomeLixeira', 'lixeiraPresente',
+                          'lixeiraQuebrada', 'outroProblema', 'criadoEm'])
+                    && request.resource.data.lixeiraId is string
+                    && exists(/databases/$(database)/documents/lixeiras/$(request.resource.data.lixeiraId))
+                    && request.resource.data.nomeLixeira is string
+                    && request.resource.data.nomeLixeira.size() <= 100
+                    && request.resource.data.lixeiraPresente in ['Sim', 'Não']
+                    && request.resource.data.lixeiraQuebrada in ['Sim', 'Não']
+                    && request.resource.data.outroProblema is string
+                    && request.resource.data.outroProblema.size() <= 500
+                    && request.resource.data.criadoEm == request.time;
+      allow read, update, delete: if false;
+    }
+  }
+}

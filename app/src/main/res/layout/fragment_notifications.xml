@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
-        android:text="Número da Lixeira:"
+        android:text="@string/numero_lixeira"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="A Lixeira está lá?"
+        android:text="@string/pergunta_presente"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -83,13 +83,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
-            android:text="Sim" />
+            android:text="@string/sim" />
 
         <RadioButton
             android:id="@+id/radioButton1_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Não" />
+            android:text="@string/nao" />
 
     </RadioGroup>
 
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:text="Ela está quebrada?"
+        android:text="@string/pergunta_quebrada"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -122,13 +122,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
-            android:text="Sim" />
+            android:text="@string/sim" />
 
         <RadioButton
             android:id="@+id/radioButton2_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Não" />
+            android:text="@string/nao" />
 
     </RadioGroup>
 
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="Outro Problema?"
+        android:text="@string/pergunta_outro"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -152,7 +152,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Digite aqui"
+        android:hint="@string/digite_aqui"
+        android:maxLength="500"
         android:minLines="3"
         android:maxHeight="200dp"
         android:scrollbars="vertical"
@@ -167,7 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="108dp"
-        android:text="Enviar"
+        android:text="@string/enviar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

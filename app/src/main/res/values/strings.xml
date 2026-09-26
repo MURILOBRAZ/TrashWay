@@ -7,4 +7,27 @@
     <string name="trashway">TrashWay</string>
     <string name="procurar_lixeiras">Procurar Lixeiras</string>
     <string name="sobre">Este Aplicativo foi desenvolvido pelos alunos do 8°Semestre do Curso de Engenharia da Computação da Universidade Santa Cecília...\n\n\n Nele você encontrará a localização das Lixeiras espalhadas pela cidade, podendo localizar a mais próxima a você para então poder descartar seu lixo, ajudando tanto nos cuidados da cidade quanto ao Meio Ambiente</string>
+
+    <!-- Mapa -->
+    <string name="voce_esta_aqui">Você está aqui</string>
+    <string name="distancia_desconhecida">Distância desconhecida</string>
+    <string name="ir">IR!</string>
+    <string name="permissao_negada">Permissão de localização negada.</string>
+    <string name="erro_carregar_lixeiras">Não foi possível carregar as lixeiras. Verifique sua conexão.</string>
+    <string name="sem_app_mapas">Nenhum app de mapas encontrado.</string>
+
+    <!-- Reportar problemas -->
+    <string name="numero_lixeira">Número da Lixeira:</string>
+    <string name="selecione_lixeira">Selecione…</string>
+    <string name="pergunta_presente">A Lixeira está lá?</string>
+    <string name="pergunta_quebrada">Ela está quebrada?</string>
+    <string name="pergunta_outro">Outro Problema?</string>
+    <string name="digite_aqui">Digite aqui</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
+    <string name="enviar">Enviar</string>
+    <string name="erro_selecione_lixeira">Selecione a lixeira.</string>
+    <string name="erro_responda_perguntas">Responda se a lixeira está lá e se está quebrada.</string>
+    <string name="problema_enviado">Problema enviado com sucesso!</string>
+    <string name="problema_falhou">Falha ao enviar o problema.</string>
 </resources>

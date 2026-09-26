@@ -6,35 +6,31 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trashway.R
-import com.google.android.gms.maps.model.LatLng
 
 class LixeiraAdapter(
-    private var lixeiras: List<Lixeira>,
     private val onClick: (Lixeira) -> Unit,
-    private val onLixeiraClick: (LatLng) -> Unit
-) : RecyclerView.Adapter<LixeiraAdapter.LixeiraViewHolder>() {
+    private val onLixeiraClick: (Lixeira) -> Unit
+) : ListAdapter<Lixeira, LixeiraAdapter.LixeiraViewHolder>(DIFF) {
 
     inner class LixeiraViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nomeTextView: TextView = itemView.findViewById(R.id.textViewNomeLixeira)
-        val localTextView: TextView = itemView.findViewById(R.id.textViewLocalLixeira)
-        val distanciaTextView: TextView = itemView.findViewById(R.id.textViewDistancia)
-        val irButton: Button = itemView.findViewById(R.id.buttonIr)
-        val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
+        private val nomeTextView: TextView = itemView.findViewById(R.id.textViewNomeLixeira)
+        private val localTextView: TextView = itemView.findViewById(R.id.textViewLocalLixeira)
+        private val distanciaTextView: TextView = itemView.findViewById(R.id.textViewDistancia)
+        private val irButton: Button = itemView.findViewById(R.id.buttonIr)
+        private val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
 
         fun bind(lixeira: Lixeira) {
             nomeTextView.text = lixeira.nome
             localTextView.text = lixeira.local
-            distanciaTextView.text = lixeira.distancia
+            distanciaTextView.text = lixeira.distanciaMetros?.let { formatarDistancia(it) }
+                ?: itemView.context.getString(R.string.distancia_desconhecida)
 
-            irButton.setOnClickListener {
-                onClick(lixeira)
-            }
-
-            linearLayout.setOnClickListener {
-                onLixeiraClick(lixeira.latLng)
-            }
+            irButton.setOnClickListener { onClick(lixeira) }
+            linearLayout.setOnClickListener { onLixeiraClick(lixeira) }
         }
     }
 
@@ -45,15 +41,13 @@ class LixeiraAdapter(
     }
 
     override fun onBindViewHolder(holder: LixeiraViewHolder, position: Int) {
-        holder.bind(lixeiras[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount() = lixeiras.size
-
-    // Método para atualizar apenas a lista de dados
-    fun updateLixeiras(newLixeiras: List<Lixeira>) {
-        lixeiras = newLixeiras
-        notifyDataSetChanged() // Notifica o adapter para atualizar a visualização
+    private companion object {
+        val DIFF = object : DiffUtil.ItemCallback<Lixeira>() {
+            override fun areItemsTheSame(oldItem: Lixeira, newItem: Lixeira) = oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: Lixeira, newItem: Lixeira) = oldItem == newItem
+        }
     }
 }
-

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -17,7 +18,7 @@
             android:id="@+id/textViewNomeLixeira"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lixeira N°"
+            tools:text="Lixeira N°01"
             android:textColor="#40C187"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -26,7 +27,7 @@
             android:id="@+id/textViewLocalLixeira"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Local"
+            tools:text="Av. Conselheiro Nébias 839"
             android:textColor="#7B7B7B"
             android:textSize="14sp" />
 
@@ -34,7 +35,7 @@
             android:id="@+id/textViewDistancia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A "
+            tools:text="A 350 m"
             android:textColor="#7B7B7B"
             android:textSize="14sp" />
     </LinearLayout>
@@ -44,7 +45,7 @@
         android:id="@+id/buttonIr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IR!"
+        android:text="@string/ir"
         android:textColor="#FFFFFF"
         android:backgroundTint="#40C187" />
 </LinearLayout>
