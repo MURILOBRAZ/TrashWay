@@ -15,9 +15,25 @@ class LixeiraViewModel(
     private val _lixeiras = MutableLiveData<List<Lixeira>>(emptyList())
     val lixeiras: LiveData<List<Lixeira>> get() = _lixeiras
 
+    // true enquanto a lista é lida do Firestore
+    private val _carregando = MutableLiveData(true)
+    val carregando: LiveData<Boolean> get() = _carregando
+
     // true quando a leitura do Firestore falhou
     private val _erroCarregamento = MutableLiveData(false)
     val erroCarregamento: LiveData<Boolean> get() = _erroCarregamento
+
+    // Lixeira escolhida no mapa para abrir já selecionada na tela de relatos
+    private val _lixeiraParaReportar = MutableLiveData<String?>(null)
+    val lixeiraParaReportar: LiveData<String?> get() = _lixeiraParaReportar
+
+    fun reportar(lixeiraId: String) {
+        _lixeiraParaReportar.value = lixeiraId
+    }
+
+    fun reporteConsumido() {
+        _lixeiraParaReportar.value = null
+    }
 
     // Posição usada no último cálculo de distâncias
     private var ultimaPosicaoCalculada: LatLng? = null
@@ -35,6 +51,7 @@ class LixeiraViewModel(
 
     fun obterLixeirasDoFirestore() {
         _erroCarregamento.value = false
+        _carregando.value = true
         db.collection("lixeiras")
             .get()
             .addOnSuccessListener { result ->
@@ -48,12 +65,14 @@ class LixeiraViewModel(
                     )
                 }
                 Log.d("LixeiraViewModel", "Total de lixeiras encontradas: ${listaLixeiras.size}")
+                _carregando.value = false
                 _lixeiras.value = listaLixeiras.sortedBy { it.nome }
                 ultimaPosicaoCalculada = null
                 userLocation?.let { atualizarDistancias(it) }
             }
             .addOnFailureListener { exception ->
                 Log.w("LixeiraViewModel", "Error getting documents.", exception)
+                _carregando.value = false
                 _erroCarregamento.value = true
             }
     }

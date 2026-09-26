@@ -1,51 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    style="@style/Widget.Material3.CardView.Outlined"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:layout_marginVertical="4dp">
 
-    <!-- Informações da lixeira -->
     <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewNomeLixeira"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold"
+                tools:text="Lixeira N°01" />
+
+            <TextView
+                android:id="@+id/textViewDistancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_distancia"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSecondaryContainer"
+                tools:text="350 m" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewNomeLixeira"
+            android:id="@+id/textViewMaisProxima"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Lixeira N°01"
-            android:textColor="#40C187"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="4dp"
+            android:text="@string/mais_proxima"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="?attr/colorPrimary"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/textViewLocalLixeira"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Av. Conselheiro Nébias 839"
-            android:textColor="#7B7B7B"
-            android:textSize="14sp" />
+            android:layout_marginTop="2dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="Av. Conselheiro Nébias 839" />
 
-        <TextView
-            android:id="@+id/textViewDistancia"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="A 350 m"
-            android:textColor="#7B7B7B"
-            android:textSize="14sp" />
+            android:layout_marginTop="8dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonReportar"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reportar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonIr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/rota_a_pe"
+                app:icon="@drawable/ic_caminhar" />
+        </LinearLayout>
     </LinearLayout>
-
-    <!-- Botão para navegar até a lixeira -->
-    <Button
-        android:id="@+id/buttonIr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ir"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#40C187" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

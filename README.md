@@ -12,11 +12,11 @@ Projeto desenvolvido pelos alunos do 8º semestre de Engenharia da Computação 
 
 ## Funcionalidades
 
-- **Mapa de lixeiras:** exibe no Google Maps todas as lixeiras cadastradas e a sua posição atual, atualizada em tempo real.
-- **Distância até cada lixeira:** calcula a distância entre você e cada lixeira (fórmula de Haversine), em metros ou quilômetros.
+- **Mapa de lixeiras:** exibe no Google Maps todas as lixeiras cadastradas e a sua posição atual, atualizada em tempo real. Lixeiras próximas umas das outras são agrupadas quando o mapa está afastado.
+- **Lixeira mais próxima primeiro:** a lista, num painel que se arrasta sobre o mapa, é ordenada pela distância até você (fórmula de Haversine) e destaca a mais próxima.
 - **Lista interativa:** tocar em um item centraliza o mapa na lixeira; tocar em um marcador rola a lista até ela.
-- **Rota a pé:** o botão **IR!** abre o Google Maps com a navegação a pé até a lixeira escolhida.
-- **Reportar problemas:** informe se a lixeira sumiu, se está quebrada ou descreva outro problema. O relato é salvo no Firebase.
+- **Rota a pé:** o botão **Rota** abre o Google Maps com a navegação a pé até a lixeira escolhida (ou o navegador, se o app não estiver instalado).
+- **Reportar problemas:** informe se a lixeira sumiu, se está quebrada ou descreva outro problema. A lixeira pode ser buscada pelo número ou endereço, ou escolhida direto na lista do mapa. O relato é salvo no Firebase.
 
 ## Como funciona
 
@@ -30,17 +30,18 @@ Projeto desenvolvido pelos alunos do 8º semestre de Engenharia da Computação 
        └── Fused Location Provider  localização do usuário
 ```
 
-- `SplashActivity` → tela de abertura, que leva à `MainActivity` com navegação inferior.
+- `MainActivity` → tela de abertura (SplashScreen API) e navegação inferior entre as três telas.
 - `ui/home` → tela inicial com a apresentação do projeto.
-- `ui/Mapa` → `DashboardFragment` (mapa + lista), `LixeiraViewModel` (leitura do Firestore e cálculo de distâncias) e `LixeiraAdapter`.
-- `ui/problemas` → `NotificationsFragment`, formulário que grava na coleção `Problemas`.
+- `ui/Mapa` → `DashboardFragment` (mapa + painel com a lista), `LixeiraViewModel` (leitura do Firestore e cálculo de distâncias), `LixeiraAdapter` e o agrupamento de marcadores (`LixeiraClusterItem`).
+- `ui/problemas` → `NotificationsFragment`, formulário que grava na coleção `Problemas` (validado pelas regras em `firestore.rules`).
 
 ## Tecnologias
 
 - Kotlin · Android SDK (minSdk 26, targetSdk 34)
 - Arquitetura MVVM com ViewModel + LiveData
-- ViewBinding / DataBinding e Navigation Component
-- Google Maps SDK for Android e Google Play Services Location
+- ViewBinding e Navigation Component
+- Material Design 3 (tema claro e escuro)
+- Google Maps SDK for Android, Maps Utils (agrupamento) e Google Play Services Location
 - Firebase Firestore e Firebase App Check
 
 ## Como executar

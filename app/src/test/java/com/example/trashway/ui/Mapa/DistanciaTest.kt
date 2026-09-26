@@ -24,11 +24,11 @@ class DistanciaTest {
 
     @Test
     fun formata_metrosAbaixoDe1km() {
-        assertEquals("A 350 m", formatarDistancia(350.7))
+        assertEquals("350 m", formatarDistancia(350.7))
     }
 
     @Test
     fun formata_quilometrosComVirgula() {
-        assertEquals("A 1,2 km", formatarDistancia(1234.0))
+        assertEquals("1,2 km", formatarDistancia(1234.0))
     }
 }

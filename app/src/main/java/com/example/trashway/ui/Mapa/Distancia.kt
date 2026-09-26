@@ -21,10 +21,10 @@ fun calcularDistanciaMetros(lat1: Double, lng1: Double, lat2: Double, lng2: Doub
     return RAIO_TERRA_METROS * c
 }
 
-// "A 350 m" abaixo de 1 km, "A 1,2 km" a partir disso
+// "350 m" abaixo de 1 km, "1,2 km" a partir disso
 fun formatarDistancia(metros: Double): String =
     if (metros < 1000) {
-        "A ${metros.toInt()} m"
+        "${metros.toInt()} m"
     } else {
-        "A ${String.format(LOCALE_BR, "%.1f", metros / 1000)} km"
+        "${String.format(LOCALE_BR, "%.1f", metros / 1000)} km"
     }

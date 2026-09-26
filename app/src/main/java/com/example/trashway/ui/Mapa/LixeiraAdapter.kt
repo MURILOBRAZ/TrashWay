@@ -3,45 +3,62 @@ package com.example.trashway.ui.Mapa
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trashway.R
+import com.example.trashway.databinding.ItemLixeiraBinding
+import com.google.android.material.color.MaterialColors
 
 class LixeiraAdapter(
-    private val onClick: (Lixeira) -> Unit,
+    private val onRota: (Lixeira) -> Unit,
+    private val onReportar: (Lixeira) -> Unit,
     private val onLixeiraClick: (Lixeira) -> Unit
 ) : ListAdapter<Lixeira, LixeiraAdapter.LixeiraViewHolder>(DIFF) {
 
-    inner class LixeiraViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nomeTextView: TextView = itemView.findViewById(R.id.textViewNomeLixeira)
-        private val localTextView: TextView = itemView.findViewById(R.id.textViewLocalLixeira)
-        private val distanciaTextView: TextView = itemView.findViewById(R.id.textViewDistancia)
-        private val irButton: Button = itemView.findViewById(R.id.buttonIr)
-        private val linearLayout: LinearLayout = itemView.findViewById(R.id.linear)
+    inner class LixeiraViewHolder(private val binding: ItemLixeiraBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(lixeira: Lixeira) {
-            nomeTextView.text = lixeira.nome
-            localTextView.text = lixeira.local
-            distanciaTextView.text = lixeira.distanciaMetros?.let { formatarDistancia(it) }
+        fun bind(lixeira: Lixeira, maisProxima: Boolean) {
+            binding.textViewNomeLixeira.text = lixeira.nome
+            binding.textViewLocalLixeira.text = lixeira.local
+            binding.textViewDistancia.text = lixeira.distanciaMetros?.let { formatarDistancia(it) }
                 ?: itemView.context.getString(R.string.distancia_desconhecida)
 
-            irButton.setOnClickListener { onClick(lixeira) }
-            linearLayout.setOnClickListener { onLixeiraClick(lixeira) }
+            // A primeira da lista (já ordenada por distância) ganha destaque
+            binding.textViewMaisProxima.visibility = if (maisProxima) View.VISIBLE else View.GONE
+            val corBorda = if (maisProxima) {
+                com.google.android.material.R.attr.colorPrimary
+            } else {
+                com.google.android.material.R.attr.colorOutlineVariant
+            }
+            binding.card.strokeColor = MaterialColors.getColor(binding.card, corBorda)
+            binding.card.strokeWidth = itemView.resources.displayMetrics.density
+                .times(if (maisProxima) 2 else 1).toInt()
+
+            binding.buttonIr.setOnClickListener { onRota(lixeira) }
+            binding.buttonReportar.setOnClickListener { onReportar(lixeira) }
+            binding.card.setOnClickListener { onLixeiraClick(lixeira) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LixeiraViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_lixeira, parent, false)
-        return LixeiraViewHolder(view)
+        val binding = ItemLixeiraBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return LixeiraViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: LixeiraViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val lixeira = getItem(position)
+        holder.bind(lixeira, maisProxima = position == 0 && lixeira.distanciaMetros != null)
+    }
+
+    override fun onCurrentListChanged(previousList: List<Lixeira>, currentList: List<Lixeira>) {
+        // O destaque depende da posição: atualiza quem saiu e quem entrou no topo
+        if (previousList.firstOrNull()?.id != currentList.firstOrNull()?.id) {
+            val antigaPrimeira = currentList.indexOfFirst { it.id == previousList.firstOrNull()?.id }
+            if (antigaPrimeira >= 0) notifyItemChanged(antigaPrimeira)
+            if (currentList.isNotEmpty()) notifyItemChanged(0)
+        }
     }
 
     private companion object {

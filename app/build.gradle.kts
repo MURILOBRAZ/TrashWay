@@ -58,7 +58,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.play.services.maps)
+    implementation(libs.maps.utils)
     implementation(libs.play.services.location)
 
     // Firebase: as versões vêm do BoM

@@ -5,14 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.trashway.R
 import com.example.trashway.databinding.FragmentNotificationsBinding
 import com.example.trashway.ui.Mapa.Lixeira
 import com.example.trashway.ui.Mapa.LixeiraViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -24,8 +25,9 @@ class NotificationsFragment : Fragment() {
     private val lixeiraViewModel: LixeiraViewModel by activityViewModels()
     private val db = FirebaseFirestore.getInstance() // Inicializa o Firestore
 
-    // Lixeiras exibidas no Spinner, na mesma ordem (a posição 0 é o "Selecione...")
-    private var lixeirasNoSpinner: List<Lixeira> = emptyList()
+    // Ids das lixeiras no campo de busca, para só recriar o adapter quando o conjunto muda
+    private var idsNaBusca: List<String> = emptyList()
+    private var selecionada: Lixeira? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,17 +36,26 @@ class NotificationsFragment : Fragment() {
     ): View {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
 
-        lixeiraViewModel.lixeiras.observe(viewLifecycleOwner) { lixeiras ->
-            // Ordem alfabética fixa: a lista do ViewModel muda de ordem conforme a distância
-            val ordenadas = lixeiras.sortedBy { it.nome }
-            // Só recria o adapter se o conjunto mudou, para não perder a seleção do usuário
-            if (ordenadas.map { it.id } == lixeirasNoSpinner.map { it.id }) return@observe
-            lixeirasNoSpinner = ordenadas
+        binding.autoCompleteLixeira.setOnItemClickListener { parent, _, position, _ ->
+            val opcao = parent.getItemAtPosition(position) as OpcaoLixeira
+            selecionar(opcao.lixeira)
+        }
+        // Se o usuário editar o texto depois de escolher, a escolha deixa de valer
+        binding.autoCompleteLixeira.doAfterTextChanged { texto ->
+            val atual = selecionada
+            if (atual != null && texto?.toString() != OpcaoLixeira(atual).toString()) {
+                selecionada = null
+            }
+        }
 
-            val nomes = listOf(getString(R.string.selecione_lixeira)) + ordenadas.map { it.nome }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, nomes)
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.SpinnerLixeira.adapter = adapter
+        lixeiraViewModel.lixeiras.observe(viewLifecycleOwner) { lixeiras ->
+            atualizarOpcoes(lixeiras)
+            preSelecionar(lixeiras)
+        }
+        lixeiraViewModel.lixeiraParaReportar.observe(viewLifecycleOwner) { id ->
+            val lixeira = lixeiraViewModel.lixeiras.value?.firstOrNull { it.id == id } ?: return@observe
+            selecionar(lixeira)
+            lixeiraViewModel.reporteConsumido()
         }
 
         binding.buttonEnviar.setOnClickListener { enviarProblema() }
@@ -52,26 +63,50 @@ class NotificationsFragment : Fragment() {
         return binding.root
     }
 
+    private fun atualizarOpcoes(lixeiras: List<Lixeira>) {
+        // Ordem alfabética fixa: a lista do ViewModel muda de ordem conforme a distância
+        val ordenadas = lixeiras.sortedBy { it.nome }
+        val ids = ordenadas.map { it.id }
+        if (ids == idsNaBusca) return
+        idsNaBusca = ids
+        binding.autoCompleteLixeira.setAdapter(
+            LixeiraBuscaAdapter(requireContext(), ordenadas.map { OpcaoLixeira(it) })
+        )
+    }
+
+    // Sem escolha do usuário, já sugere a lixeira mais próxima
+    private fun preSelecionar(lixeiras: List<Lixeira>) {
+        if (selecionada != null || !binding.autoCompleteLixeira.text.isNullOrEmpty()) return
+        val maisProxima = lixeiras.firstOrNull()?.takeIf { it.distanciaMetros != null } ?: return
+        selecionar(maisProxima)
+    }
+
+    private fun selecionar(lixeira: Lixeira) {
+        selecionada = lixeira
+        // filter = false: preenche sem abrir a lista de sugestões
+        binding.autoCompleteLixeira.setText(OpcaoLixeira(lixeira).toString(), false)
+        binding.inputLixeira.error = null
+    }
+
     private fun enviarProblema() {
-        val posicao = binding.SpinnerLixeira.selectedItemPosition
-        val lixeira = lixeirasNoSpinner.getOrNull(posicao - 1)
+        val lixeira = selecionada
         if (lixeira == null) {
-            Toast.makeText(requireContext(), R.string.erro_selecione_lixeira, Toast.LENGTH_SHORT).show()
+            binding.inputLixeira.error = getString(R.string.erro_selecione_lixeira)
             return
         }
 
-        val presente = binding.radioGroup1.checkedRadioButtonId
-        val quebrada = binding.radioGroup2.checkedRadioButtonId
+        val presente = binding.togglePresente.checkedButtonId
+        val quebrada = binding.toggleQuebrada.checkedButtonId
         if (presente == View.NO_ID || quebrada == View.NO_ID) {
-            Toast.makeText(requireContext(), R.string.erro_responda_perguntas, Toast.LENGTH_SHORT).show()
+            avisar(R.string.erro_responda_perguntas)
             return
         }
 
         val problemaReportado = mapOf(
             "lixeiraId" to lixeira.id,
             "nomeLixeira" to lixeira.nome,
-            "lixeiraPresente" to (if (presente == R.id.radioButton1_1) "Sim" else "Não"),
-            "lixeiraQuebrada" to (if (quebrada == R.id.radioButton2_1) "Sim" else "Não"),
+            "lixeiraPresente" to (if (presente == R.id.buttonPresenteSim) "Sim" else "Não"),
+            "lixeiraQuebrada" to (if (quebrada == R.id.buttonQuebradaSim) "Sim" else "Não"),
             "outroProblema" to binding.editTextProblem.text.toString().trim(),
             "criadoEm" to FieldValue.serverTimestamp()
         )
@@ -86,26 +121,35 @@ class NotificationsFragment : Fragment() {
                 val b = _binding ?: return@addOnSuccessListener
                 b.buttonEnviar.isEnabled = true
                 limparCampos()
-                Toast.makeText(b.root.context, R.string.problema_enviado, Toast.LENGTH_SHORT).show()
+                avisar(R.string.problema_enviado)
             }
             .addOnFailureListener { e ->
                 Log.w("NotificationsFragment", "Erro ao enviar problema", e)
                 val b = _binding ?: return@addOnFailureListener
                 b.buttonEnviar.isEnabled = true
-                Toast.makeText(b.root.context, R.string.problema_falhou, Toast.LENGTH_SHORT).show()
+                avisar(R.string.problema_falhou)
             }
     }
 
+    private fun avisar(@StringRes mensagem: Int) {
+        val b = _binding ?: return
+        Snackbar.make(b.root, mensagem, Snackbar.LENGTH_LONG)
+            .setAnchorView(requireActivity().findViewById(R.id.nav_view))
+            .show()
+    }
+
     private fun limparCampos() {
-        binding.SpinnerLixeira.setSelection(0)
-        binding.radioGroup1.clearCheck()
-        binding.radioGroup2.clearCheck()
-        binding.editTextProblem.text.clear()
+        selecionada = null
+        binding.autoCompleteLixeira.setText("", false)
+        binding.togglePresente.clearChecked()
+        binding.toggleQuebrada.clearChecked()
+        binding.editTextProblem.text?.clear()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        lixeirasNoSpinner = emptyList()
+        idsNaBusca = emptyList()
+        selecionada = null
     }
 }
