@@ -24,7 +24,11 @@ android {
             val file = rootProject.file("local.properties")
             if (file.exists()) file.inputStream().use { load(it) }
         }
-        manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
+        val mapsApiKey = localProperties.getProperty("MAPS_API_KEY", "")
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+        // Rota a pé dentro do app (Routes API). Por padrão usa a mesma chave do mapa.
+        val routesApiKey = localProperties.getProperty("ROUTES_API_KEY", mapsApiKey)
+        buildConfigField("String", "ROUTES_API_KEY", "\"$routesApiKey\"")
     }
 
     buildTypes {
@@ -45,6 +49,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -70,6 +75,8 @@ dependencies {
     debugImplementation(libs.firebase.appcheck.debug)
 
     testImplementation(libs.junit)
+    // org.json de verdade nos testes (o do Android é só um stub fora do aparelho)
+    testImplementation(libs.json)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

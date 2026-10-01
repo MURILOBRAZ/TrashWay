@@ -25,6 +25,28 @@
     <string name="erro_carregar_lixeiras">Não foi possível carregar as lixeiras. Verifique sua conexão.</string>
     <string name="sem_app_mapas">Nenhum app de mapas encontrado.</string>
 
+    <!-- Navegação dentro do app -->
+    <string name="recentralizar">Voltar a seguir minha posição</string>
+    <string name="abrir_no_google_maps">Abrir no Google Maps</string>
+    <string name="encerrar">Encerrar</string>
+    <string name="calculando_rota">Calculando rota…</string>
+    <string name="procurando_localizacao">Procurando sua localização…</string>
+    <string name="siga_em_frente">Siga em frente</string>
+    <string name="lixeira_a_frente">A lixeira está logo à frente</string>
+    <string name="siga_direcao_lixeira">Siga na direção da seta</string>
+    <string name="em_linha_reta">em linha reta</string>
+    <string name="destino_resumo">%1$s · %2$s</string>
+    <string name="resumo_rota">%1$s · %2$s</string>
+    <string name="menos_de_1_min">&lt; 1 min</string>
+    <string name="minutos">%d min</string>
+    <string name="sem_rota">Não foi possível calcular a rota. Siga a seta até a lixeira.</string>
+    <string name="rota_recalculada">Rota recalculada</string>
+    <string name="chegada_titulo">Você chegou! 🎉</string>
+    <string name="chegada_mensagem">Encontrou a %1$s? Como ela está?</string>
+    <string name="chegada_tudo_certo">Tudo certo</string>
+    <string name="chegada_reportar">Reportar problema</string>
+    <string name="chegada_obrigado">Valeu por ajudar a manter a cidade limpa!</string>
+
     <!-- Reportar problemas -->
     <string name="reportar_subtitulo">Viu uma lixeira com problema? Conte pra gente.</string>
     <string name="numero_lixeira">Lixeira</string>

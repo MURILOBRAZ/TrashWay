@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Avatar do usuário no modo navegação: seta verde num disco branco com halo -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="56dp"
+    android:height="56dp"
+    android:viewportWidth="56"
+    android:viewportHeight="56">
+    <path
+        android:fillColor="#33007A51"
+        android:pathData="M28,0a28,28 0,1 1,0 56a28,28 0,1 1,0 -56z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#1A000000"
+        android:strokeWidth="1"
+        android:pathData="M28,11a17,17 0,1 1,0 34a17,17 0,1 1,0 -34z" />
+    <path
+        android:fillColor="@color/verde_marca"
+        android:pathData="M28,15L19,40L28,35L37,40z" />
+</vector>

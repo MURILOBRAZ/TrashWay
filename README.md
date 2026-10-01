@@ -15,7 +15,7 @@ Projeto desenvolvido pelos alunos do 8º semestre de Engenharia da Computação 
 - **Mapa de lixeiras:** exibe no Google Maps todas as lixeiras cadastradas e a sua posição atual, atualizada em tempo real. Lixeiras próximas umas das outras são agrupadas quando o mapa está afastado.
 - **Lixeira mais próxima primeiro:** a lista, num painel que se arrasta sobre o mapa, é ordenada pela distância até você (fórmula de Haversine) e destaca a mais próxima.
 - **Lista interativa:** tocar em um item centraliza o mapa na lixeira; tocar em um marcador rola a lista até ela.
-- **Rota a pé:** o botão **Rota** abre o Google Maps com a navegação a pé até a lixeira escolhida (ou o navegador, se o app não estiver instalado).
+- **Navegação dentro do app:** o botão **Rota** entra num modo de navegação no estilo de jogos de localização: câmera 3D que segue você e gira com a bússola do celular, avatar que desliza pelo mapa, rota a pé desenhada pelas ruas (Routes API) com a próxima manobra e o tempo restante. Ao sair do caminho a rota é recalculada; sem rota disponível, uma seta aponta direto para a lixeira. Ao chegar, o celular vibra e pergunta se a lixeira está ok, com atalho para reportar. O Google Maps continua disponível pelo botão de abrir externamente.
 - **Reportar problemas:** informe se a lixeira sumiu, se está quebrada ou descreva outro problema. A lixeira pode ser buscada pelo número ou endereço, ou escolhida direto na lista do mapa. O relato é salvo no Firebase.
 
 ## Como funciona
@@ -27,6 +27,7 @@ Projeto desenvolvido pelos alunos do 8º semestre de Engenharia da Computação 
 └──────┬───────┘     Problemas (relatos dos usuários)       └─────────────────────┘
        │
        ├── Google Maps SDK ........ mapa e marcadores
+       ├── Routes API ............. rota a pé (navegação no app)
        └── Fused Location Provider  localização do usuário
 ```
 
@@ -59,6 +60,7 @@ As chaves **não** ficam no repositório. Antes de compilar:
    ```properties
    MAPS_API_KEY=sua_chave_aqui
    ```
+   A mesma chave é usada para calcular as rotas a pé: ative também a **Routes API** no projeto do Google Cloud (se a chave tiver restrição de APIs, inclua a Routes API nela). Para usar outra chave só para as rotas, adicione `ROUTES_API_KEY=...` no mesmo arquivo.
 2. **Firebase:** baixe o `google-services.json` do seu projeto Firebase e coloque-o em `app/google-services.json`. O arquivo `app/google-services.json.example` mostra o formato esperado.
 3. **Dados:** crie no Firestore a coleção `lixeiras`, com documentos no formato:
    ```json

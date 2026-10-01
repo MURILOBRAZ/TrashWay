@@ -4,6 +4,10 @@
     <color name="header">#97E5AA</color>
     <color name="verde_marca">#007A51</color>
 
+    <!-- Linha da rota no modo navegação -->
+    <color name="linha_rota">#1FD67A</color>
+    <color name="borda_rota">#00522F</color>
+
     <!-- Paleta do tema claro (Material 3) -->
     <color name="primary">#007A51</color>
     <color name="on_primary">#FFFFFF</color>
