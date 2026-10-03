@@ -1,6 +1,7 @@
 package com.example.trashway
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -24,6 +25,11 @@ class MainActivity : AppCompatActivity() {
         val navHost = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         binding.navView.setupWithNavController(navHost.navController)
+    }
+
+    // Esconde a barra de abas durante a navegação, para o mapa ocupar a tela toda
+    fun mostrarBarraInferior(visivel: Boolean) {
+        binding.navView.visibility = if (visivel) View.VISIBLE else View.GONE
     }
 
     // Troca de aba como se o usuário tocasse na barra inferior

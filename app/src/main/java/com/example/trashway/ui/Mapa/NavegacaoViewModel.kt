@@ -47,7 +47,20 @@ class NavegacaoViewModel(application: Application) : AndroidViewModel(applicatio
 
     val navegando: Boolean get() = _estado.value != null
 
+    // Pedido da tela inicial: navegar até a mais próxima assim que as distâncias forem conhecidas
+    var maisProximaPendente = false
+        private set
+
+    fun irParaMaisProxima() {
+        maisProximaPendente = true
+    }
+
+    fun cancelarMaisProxima() {
+        maisProximaPendente = false
+    }
+
     fun iniciar(lixeira: Lixeira, posicao: LatLng?) {
+        maisProximaPendente = false
         cancelarCalculo()
         progressoRota = null
         leiturasForaDaRota = 0

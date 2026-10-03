@@ -7,7 +7,8 @@
     <!-- Início -->
     <string name="bem_vindo">Bem-vindo!</string>
     <string name="sobre_resumo">Encontre a lixeira pública mais próxima e ajude a manter a cidade limpa.</string>
-    <string name="encontrar_lixeira">Encontrar lixeira próxima</string>
+    <string name="ir_mais_proxima">Ir à lixeira mais próxima</string>
+    <string name="ver_lixeiras_mapa">Ver lixeiras no mapa</string>
     <string name="reportar_problema">Reportar um problema</string>
     <string name="sobre">Este aplicativo foi desenvolvido pelos alunos do 8º semestre do curso de Engenharia da Computação da Universidade Santa Cecília.\n\nNele você encontra a localização das lixeiras espalhadas pela cidade e pode localizar a mais próxima para descartar seu lixo, ajudando a cuidar da cidade e do meio ambiente.</string>
     <string name="copyright">© 2024 TrashWay</string>
@@ -31,6 +32,7 @@
     <string name="encerrar">Encerrar</string>
     <string name="calculando_rota">Calculando rota…</string>
     <string name="procurando_localizacao">Procurando sua localização…</string>
+    <string name="procurando_mais_proxima">Procurando a lixeira mais próxima…</string>
     <string name="siga_em_frente">Siga em frente</string>
     <string name="lixeira_a_frente">A lixeira está logo à frente</string>
     <string name="siga_direcao_lixeira">Siga na direção da seta</string>
@@ -46,6 +48,72 @@
     <string name="chegada_tudo_certo">Tudo certo</string>
     <string name="chegada_reportar">Reportar problema</string>
     <string name="chegada_obrigado">Valeu por ajudar a manter a cidade limpa!</string>
+
+    <!-- Sugestão de lixeiras novas (votação da comunidade) -->
+    <string name="sugerir_lixeira">Sugerir lixeira</string>
+    <string name="escolher_local_titulo">Arraste o mapa até a lixeira</string>
+    <string name="escolher_local_distancia">A %1$s de você · máximo 50 m</string>
+    <string name="escolher_local_longe">Muito longe: chegue a até 50 m (está a %1$s)</string>
+    <string name="escolher_local_sem_gps">Aguardando sua localização…</string>
+    <string name="referencia_hint">Referência (ex.: em frente ao nº 120)</string>
+    <string name="explicacao_votos">Quando 5 pessoas confirmarem, a lixeira entra no mapa para todos.</string>
+    <string name="explicacao_admin">Como administrador, a lixeira entra no mapa na hora.</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="solicitar">Solicitar</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="sair_conta">Sair (%1$s)</string>
+    <string name="erro_referencia">Conte onde fica a lixeira.</string>
+    <string name="ja_existe_lixeira">A %1$s já está no mapa, a %2$s daqui.</string>
+    <string name="ja_existe_solicitacao_titulo">Já pediram uma lixeira aqui</string>
+    <string name="ja_existe_solicitacao">Há um pedido a %1$s daqui (%2$d de 5 confirmações). Quer confirmar esse pedido em vez de criar outro?</string>
+    <string name="solicitacao_enviada">Pedido enviado! Quando 5 pessoas confirmarem, a lixeira entra no mapa.</string>
+    <string name="lixeira_cadastrada">%1$s cadastrada no mapa.</string>
+    <string name="solicitacao_titulo">Lixeira sugerida</string>
+    <string name="solicitacao_mensagem">%1$s\n\n%2$d de 5 confirmações · a %3$s de você.\n\nVocê também viu uma lixeira aqui? Com 5 confirmações de pessoas diferentes ela entra no mapa.</string>
+    <string name="solicitacao_mensagem_sem_distancia">%1$s\n\n%2$d de 5 confirmações.\n\nVocê também viu uma lixeira aqui? Com 5 confirmações de pessoas diferentes ela entra no mapa.</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="fechar">Fechar</string>
+    <string name="moderar">Moderar</string>
+    <string name="aprovar_agora">Aprovar agora</string>
+    <string name="recusar">Recusar pedido</string>
+    <string name="confirmacao_registrada">Confirmação registrada (%1$d de 5). Valeu!</string>
+    <string name="lixeira_aprovada">A comunidade aprovou! %1$s entrou no mapa 🎉</string>
+    <string name="ja_confirmou">Você já confirmou esse pedido.</string>
+    <string name="solicitacao_encerrada">Esse pedido já foi encerrado.</string>
+    <string name="solicitacao_recusada">Pedido recusado.</string>
+    <string name="longe_para_confirmar">Chegue a até 50 m da lixeira para confirmar (você está a %1$s).</string>
+    <string name="sem_localizacao">Ainda não sabemos onde você está. Tente de novo em instantes.</string>
+    <string name="erro_operacao">Não foi possível concluir. Verifique sua conexão.</string>
+    <string name="login_titulo">Entrar com o Google</string>
+    <string name="login_mensagem">Para sugerir e confirmar lixeiras, entre com sua conta Google. Assim cada pessoa conta uma vez na votação.\n\nO resto do app continua funcionando sem login.</string>
+    <string name="entrar">Entrar</string>
+    <string name="agora_nao">Agora não</string>
+    <string name="erro_login">Não foi possível entrar com o Google.</string>
+
+    <!-- Pedidos de lixeira para lugares que não têm (voz do povo) -->
+    <string name="sugerir_titulo">O que você quer fazer?</string>
+    <string name="opcao_adicionar_lixeira">Adicionar esta lixeira ao mapa</string>
+    <string name="opcao_pedir_lixeira">Pedir uma lixeira para cá</string>
+    <string name="escolher_local_titulo_pedido">Arraste o mapa até onde falta lixeira</string>
+    <string name="referencia_hint_pedido">Referência (ex.: ponto de ônibus da praça)</string>
+    <string name="explicacao_pedido">Outras pessoas podem apoiar o seu pedido. Os mais apoiados mostram onde a cidade precisa de lixeiras.</string>
+    <string name="pedir">Pedir</string>
+    <string name="erro_referencia_pedido">Conte onde falta a lixeira.</string>
+    <string name="pedido_lixeira_perto">Já tem a %1$s a %2$s daqui. Peça uma lixeira para um lugar mais longe dela.</string>
+    <string name="ja_existe_pedido_titulo">Já pediram uma lixeira aqui</string>
+    <string name="ja_existe_pedido">Há um pedido a %1$s daqui: %2$s. Quer apoiar esse pedido em vez de criar outro?</string>
+    <string name="pedido_enviado">Pedido enviado! Agora outras pessoas podem apoiá-lo.</string>
+    <string name="pedido_titulo">Pedido de lixeira</string>
+    <string name="pedido_mensagem">%1$s\n\n%2$s.\n\nTambém acha que falta uma lixeira aqui? Apoie o pedido: quanto mais apoios, mais forte a voz do bairro.</string>
+    <string name="apoiar">Apoiar</string>
+    <string name="apoio_registrado">Apoio registrado. Valeu!</string>
+    <string name="ja_apoiou">Você já apoiou esse pedido.</string>
+    <string name="pedido_encerrado">Esse pedido já foi encerrado.</string>
+    <string name="lixeira_instalada">Lixeira instalada (adicionar ao mapa)</string>
+    <plurals name="pessoas_pedem">
+        <item quantity="one">%d pessoa pede uma lixeira aqui</item>
+        <item quantity="other">%d pessoas pedem uma lixeira aqui</item>
+    </plurals>
 
     <!-- Reportar problemas -->
     <string name="reportar_subtitulo">Viu uma lixeira com problema? Conte pra gente.</string>

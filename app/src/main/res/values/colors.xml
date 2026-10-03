@@ -3,6 +3,8 @@
     <!-- Cores da marca, tiradas do logo -->
     <color name="header">#97E5AA</color>
     <color name="verde_marca">#007A51</color>
+    <!-- Pedidos de lixeira nova no mapa -->
+    <color name="laranja_pedido">#E0700F</color>
 
     <!-- Linha da rota no modo navegação -->
     <color name="linha_rota">#1FD67A</color>

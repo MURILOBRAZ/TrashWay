@@ -2,9 +2,180 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Lixeiras: somente leitura pelo app (cadastro feito pelo console)
+    function logado() {
+      return request.auth != null;
+    }
+
+    // Administradores: um documento por uid na coleção "admins", criado pelo console
+    function admin() {
+      return logado() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function solicitacao(id) {
+      return /databases/$(database)/documents/solicitacoes/$(id);
+    }
+
+    function voto(solicitacaoId, uid) {
+      return /databases/$(database)/documents/solicitacoes/$(solicitacaoId)/votos/$(uid);
+    }
+
+    function lixeira(id) {
+      return /databases/$(database)/documents/lixeiras/$(id);
+    }
+
+    function textoValido(valor, maximo) {
+      return valor is string && valor.size() > 0 && valor.size() <= maximo;
+    }
+
+    // Lixeiras: qualquer um lê. Só são criadas por um administrador (direto ou ao
+    // atender um pedido) ou por uma solicitação que atingiu 5 votos (mesmo id dela).
     match /lixeiras/{lixeiraId} {
       allow read: if true;
+      allow create: if lixeiraValida() && (admin() || aprovadaPelaComunidade(lixeiraId));
+      allow update, delete: if false;
+
+      function lixeiraValida() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['nome', 'local', 'coordenada', 'criadoEm', 'origem'])
+            && textoValido(d.nome, 100)
+            && textoValido(d.local, 200)
+            && d.coordenada is latlng
+            && d.criadoEm == request.time
+            && d.origem in ['comunidade', 'admin'];
+      }
+
+      function aprovadaPelaComunidade(id) {
+        let s = getAfter(solicitacao(id)).data;
+        return s.status == 'aprovada'
+            && s.votos >= 5
+            && request.resource.data.origem == 'comunidade'
+            && request.resource.data.coordenada == s.coordenada
+            && request.resource.data.local == s.referencia;
+      }
+    }
+
+    // Solicitações de lixeiras novas. Leitura livre (aparecem no mapa para todos);
+    // criar e votar exigem login, e cada voto soma exatamente 1.
+    match /solicitacoes/{solicitacaoId} {
+      allow read: if true;
+
+      allow create: if logado()
+          && request.resource.data.keys().hasOnly(
+               ['coordenada', 'referencia', 'criadoPor', 'criadoEm', 'votos', 'status'])
+          && request.resource.data.coordenada is latlng
+          && textoValido(request.resource.data.referencia, 200)
+          && request.resource.data.criadoPor == request.auth.uid
+          && request.resource.data.criadoEm == request.time
+          && request.resource.data.votos == 1
+          && request.resource.data.status == 'pendente'
+          // O pedido já conta como o voto de quem pediu
+          && existsAfter(voto(solicitacaoId, request.auth.uid));
+
+      allow update: if logado() && resource.data.status == 'pendente'
+          && (novoVoto() || decisaoDoAdmin());
+
+      allow delete: if false;
+
+      function novoVoto() {
+        let novo = request.resource.data;
+        return novo.diff(resource.data).affectedKeys().hasOnly(['votos', 'status'])
+            && novo.votos == resource.data.votos + 1
+            && !exists(voto(solicitacaoId, request.auth.uid))
+            && existsAfter(voto(solicitacaoId, request.auth.uid))
+            // Com 5 votos vira lixeira na mesma operação; antes disso continua pendente
+            && ((novo.votos < 5 && novo.status == 'pendente')
+                || (novo.votos >= 5 && novo.status == 'aprovada'
+                    && existsAfter(lixeira(solicitacaoId))));
+      }
+
+      function decisaoDoAdmin() {
+        let novo = request.resource.data;
+        return admin()
+            && novo.diff(resource.data).affectedKeys().hasOnly(['status'])
+            && (novo.status == 'recusada'
+                || (novo.status == 'aprovada' && existsAfter(lixeira(solicitacaoId))));
+      }
+
+      // Votos: um documento por pessoa (id = uid). Cada um só lê o próprio.
+      match /votos/{uid} {
+        allow read: if logado() && request.auth.uid == uid;
+        allow create: if logado() && request.auth.uid == uid
+            && request.resource.data.keys().hasOnly(['criadoEm'])
+            && request.resource.data.criadoEm == request.time
+            // Só junto com a criação da solicitação ou com o +1 no contador
+            && ((!exists(solicitacao(solicitacaoId)) && existsAfter(solicitacao(solicitacaoId)))
+                || (exists(solicitacao(solicitacaoId))
+                    && getAfter(solicitacao(solicitacaoId)).data.votos
+                         == get(solicitacao(solicitacaoId)).data.votos + 1));
+        allow update, delete: if false;
+      }
+    }
+
+    function pedido(id) {
+      return /databases/$(database)/documents/pedidos/$(id);
+    }
+
+    function apoio(pedidoId, uid) {
+      return /databases/$(database)/documents/pedidos/$(pedidoId)/apoios/$(uid);
+    }
+
+    // Pedidos de lixeira para um lugar que não tem ("voz do povo"). Não viram lixeira
+    // pelos votos: os apoios só mostram onde faltam lixeiras. Quando uma for instalada,
+    // um administrador marca o pedido como atendido e cria a lixeira com o mesmo id.
+    match /pedidos/{pedidoId} {
+      allow read: if true;
+
+      allow create: if logado()
+          && request.resource.data.keys().hasOnly(
+               ['coordenada', 'referencia', 'criadoPor', 'criadoEm', 'apoios', 'status'])
+          && request.resource.data.coordenada is latlng
+          && textoValido(request.resource.data.referencia, 200)
+          && request.resource.data.criadoPor == request.auth.uid
+          && request.resource.data.criadoEm == request.time
+          && request.resource.data.apoios == 1
+          && request.resource.data.status == 'aberto'
+          // O pedido já conta como o apoio de quem pediu
+          && existsAfter(apoio(pedidoId, request.auth.uid));
+
+      allow update: if logado() && resource.data.status == 'aberto'
+          && (novoApoio() || decisaoDoAdmin());
+
+      allow delete: if false;
+
+      function novoApoio() {
+        let novo = request.resource.data;
+        return novo.diff(resource.data).affectedKeys().hasOnly(['apoios'])
+            && novo.apoios == resource.data.apoios + 1
+            && !exists(apoio(pedidoId, request.auth.uid))
+            && existsAfter(apoio(pedidoId, request.auth.uid));
+      }
+
+      function decisaoDoAdmin() {
+        let novo = request.resource.data;
+        return admin()
+            && novo.diff(resource.data).affectedKeys().hasOnly(['status'])
+            && (novo.status == 'recusado'
+                || (novo.status == 'atendido' && existsAfter(lixeira(pedidoId))));
+      }
+
+      // Apoios: um documento por pessoa (id = uid). Cada um só lê o próprio.
+      match /apoios/{uid} {
+        allow read: if logado() && request.auth.uid == uid;
+        allow create: if logado() && request.auth.uid == uid
+            && request.resource.data.keys().hasOnly(['criadoEm'])
+            && request.resource.data.criadoEm == request.time
+            // Só junto com a criação do pedido ou com o +1 no contador
+            && ((!exists(pedido(pedidoId)) && existsAfter(pedido(pedidoId)))
+                || (exists(pedido(pedidoId))
+                    && getAfter(pedido(pedidoId)).data.apoios
+                         == get(pedido(pedidoId)).data.apoios + 1));
+        allow update, delete: if false;
+      }
+    }
+
+    // Administradores: cada um só consegue ler o próprio documento (para o app saber se é admin)
+    match /admins/{uid} {
+      allow read: if logado() && request.auth.uid == uid;
       allow write: if false;
     }
 

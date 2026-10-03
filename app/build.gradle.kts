@@ -71,6 +71,13 @@ dependencies {
     // Firebase: as versões vêm do BoM
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+
+    // Login com Google (Credential Manager), usado só para sugerir e confirmar lixeiras
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services)
+    implementation(libs.googleid)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     releaseImplementation(libs.firebase.appcheck.playintegrity)
     debugImplementation(libs.firebase.appcheck.debug)
 

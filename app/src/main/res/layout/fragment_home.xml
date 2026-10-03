@@ -40,13 +40,24 @@
                 android:textAppearance="?attr/textAppearanceBodyLarge"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
+            <!-- Atalho principal: já abre a navegação até a lixeira mais próxima -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonProcurar"
+                android:id="@+id/buttonIrMaisProxima"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:minHeight="56dp"
-                android:text="@string/encontrar_lixeira"
+                android:text="@string/ir_mais_proxima"
+                app:icon="@drawable/ic_caminhar" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonProcurar"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="56dp"
+                android:text="@string/ver_lixeiras_mapa"
                 app:icon="@drawable/ic_dashboard_black_24dp" />
 
             <com.google.android.material.button.MaterialButton
