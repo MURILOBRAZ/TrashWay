@@ -6,9 +6,11 @@ Projeto desenvolvido pelos alunos do 8º semestre de Engenharia da Computação 
 
 ## Telas
 
-| Abertura | Início | Procurar Lixeiras | Reportar Problemas |
-|:---:|:---:|:---:|:---:|
-| <img src="docs/screenshots/00-splash.png" width="200"> | <img src="docs/screenshots/01-inicio.png" width="200"> | <img src="docs/screenshots/02-mapa.png" width="200"> | <img src="docs/screenshots/03-reportar.png" width="200"> |
+| Abertura | Início | Procurar Lixeiras |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/00-splash.png" width="200"> | <img src="docs/screenshots/01-inicio.png" width="200"> | <img src="docs/screenshots/02-mapa.png" width="200"> |
+| **Navegação a pé** | **Adicionar ou pedir lixeira** | **Reportar Problemas** |
+| <img src="docs/screenshots/03-navegacao.png" width="200"> | <img src="docs/screenshots/04-contribuir.png" width="200"> | <img src="docs/screenshots/05-reportar.png" width="200"> |
 
 ## Funcionalidades
 

@@ -224,7 +224,13 @@ class DashboardFragment : Fragment(), OnMapReadyCallback {
         contaViewModel.admin.observe(viewLifecycleOwner) { atualizarCartaoSugestao() }
 
         lixeiraViewModel.lixeiras.observe(viewLifecycleOwner) { lixeiras ->
-            lixeiraAdapter.submitList(lixeiras)
+            // Ao reordenar, o RecyclerView segue o item que estava no topo; se o usuário
+            // não tinha rolado a lista, volta ao topo para a mais próxima continuar visível
+            val lista = binding.recyclerViewLixeiras
+            val estavaNoTopo = (lista.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() <= 0
+            lixeiraAdapter.submitList(lixeiras) {
+                if (estavaNoTopo) _binding?.recyclerViewLixeiras?.scrollToPosition(0)
+            }
             sincronizarMarcadores(lixeiras)
             atualizarTitulo(lixeiras)
             irParaMaisProximaSePendente(lixeiras)
